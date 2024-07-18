@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iphone 15 todolist</title>
+    <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+</head>
+<body>
+    <div id="container">
+        <div class="iphone">
+            <img class="iphone-mockup" src="./images/iphone15pro.png" alt="아이폰15 pro max">
+            <img class="iphone-camera" src="./images/camera.png" alt="아이폰15 pro 카메라 섬">
+            <span class="time">00:00</span>
+            <img class="icons" src="./images/ui-lock-top.png" alt="아이콘">
+            <!-- 디스플레이 영역 -->
+            <div class="display">
+                <div class="section">
+                    <div class="article">
+                        <h2>the</h2>
+                        <h1 class="title">Task <br> App</h1>
+                        <p>*</p>
+                        <p>Lorem ipsum dolor, sit amet <br> consectetur adipisicing elit. <br> Placeat, esse id officiis <br> impedit at nulla sequi, <br> possimus</p>
+                        <p>made by kim jin mo</p>
+                        <p>OZ CODING SCHOOL</p>
+                        <div class="circle start-btn">write task &nbsp; &nbsp; &nbsp;<span>>></span></div>
+                    </div>
+                    <div class="article">
+                        <div class="header">
+                            <div class="header-btn">
+                                <span class="prev-btn"></span>
+                                <img src="./images/asterisk.png" class="asterisk" alt="로고 애스터리스크"></img>
+                                <span class="next-btn"></span>
+                            </div>
+                            <div class="task-list-container">
+                                <button class="write-task-btn">Add Task</button>
+                                <div class="task-lists">
+                                </div>
+                            </div>
+                            <div class="logo">
+                                <h2>the</h2>
+                                <h2>Task <br> App</h2>
+                            </div>
+                        </div>
+                        <div class="main">
+                            <div class="btn-col">
+                                <img class="icon-todo" src="./images/icons8-연필.gif" alt="투두앱 고정아이콘">
+                                <h2>Write your TO-DOS</h2>
+                                <img src="./images/asterisk.png" class="asterisk" alt="로고 애스터리스크"></img>
+                            </div>
+                            <div class="add-task-box">
+                                <form class="add-task">
+                                    <h2>Write Task</h2>
+                                    <div class="write-wrap">
+                                        <label for="task-title">제목</label>
+                                        <input class="title-input" type="text" name="task-title" id="task-title" placeholder="Title">
+                                    </div>
+                                    <div class="write-wrap">
+                                        <label for="task-description">내용</label>
+                                    <textarea name="task-description" id="task-description" placeholder="Description"></textarea>
+                                    </div>
+                                    <div class="write-wrap">
+                                        <button class="submit-btn" type="submit">Post</button>
+                                    </div>
+                                    <button class="close-btn">
+                                        <span class="material-symbols-outlined">close</span>
+                                    </button>
+                                </form>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="article">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="./script.js"></script>
+</body>
+</html>
