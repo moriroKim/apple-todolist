@@ -571,7 +571,7 @@ html, body {
     cursor: pointer;
     transition: all 0.3s ease-in-out;
 
-    position: fixed;
+    position: absolute;
     top: 100px;
     left: 19px;
     z-index: 999;
@@ -583,15 +583,26 @@ html, body {
     transition: all 0.3s ease-in-out;
 }
 
+.task-lists-wrapper {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    top: 210px;
+    left: 0;
+    background-color: rgb(213, 91, 46);
+    box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.114) inset;
+    overflow: auto;
+}
+
 .task-lists {
     width: 100%;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 10px; /* 열 사이의 간격 */
+    gap: 10px;
     position: absolute;
-    top: 230px;
+    top: 0;
     left: 0;
-    padding: 0 18px;
+    padding: 24px 18px;
     
     z-index: 1;
 }
