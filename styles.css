@@ -646,17 +646,16 @@ html, body {
 }
 
 .task > .task-phrase {
-    width: 128.99px;          /* 지정된 너비 */
-    height: 42px;             /* 높이 */
-    font-size: 14px;          /* 폰트 사이즈 */
-    color: #8c8c8c;           /* 폰트 색상 */
-    text-align: left;         /* 텍스트 정렬 */
-    margin-bottom: 18px;      /* 하단 여백 */
+    width: 128.99px;
+    height: 42px;
+    font-size: 14px;
+    color: #8c8c8c;
+    text-align: left;
+    margin-bottom: 18px;
 
-    white-space: pre-wrap;      /* 텍스트가 줄 바꿈되도록 설정 */
-    overflow: auto;         /* 넘치는 텍스트 숨기기 */
-    text-overflow: ellipsis;  /* 넘치는 텍스트를 '...'으로 표시 */
-    -webkit-box-orient: vertical; /* 수직 방향 박스 설정 */
+    white-space: pre-wrap;
+    word-break: break-all;
+    overflow: auto;
 }
 
 .task > .date {
