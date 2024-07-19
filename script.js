@@ -3,7 +3,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const writeTaskModal = document.querySelector('.add-task-box');
     const taskContainer = document.querySelector('.task-list-container');
     const header = document.querySelector('.header');
+    const taskList = document.querySelector('.task-lists');
 
+    const time = document.querySelector('.time');
     const logo = document.querySelector('.logo');
     const prevBtn = document.querySelector('.prev-btn');
     const startBtn = document.querySelector('.start-btn');
@@ -12,9 +14,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const writeTaskBtn = document.querySelector('.write-task-btn');
     const closeModalBtn = document.querySelector('.close-btn');
     const submitBtn = document.querySelector('.submit-btn');
-
     const taskTitleInput = document.querySelector('#task-title');
-    const taskDescriptionInput = document.querySelector('#task-description');
+    const taskDescInput = document.querySelector('#task-description');
+    const addTaskAni = document.querySelector('.add-task-ani');
+    const delTaskAni = document.querySelector('.del-task-ani');
+
+
 
     // 로컬스토리지에 저장할 배열
     let userData = [];
@@ -32,10 +37,21 @@ document.addEventListener('DOMContentLoaded', () => {
         sections.style.left = `${displayLocationX}px`;
     });
 
-    // task 추가화면의 이전 버튼
+    // Add task화면의 이전 버튼
     prevBtn.addEventListener('click', () => {
-        displayLocationX += displayWidth;
-        sections.style.left = `${displayLocationX}px`;
+        if(header.style.height > `838.50px`) {
+            header.style.height = `250px`;
+            logo.style.top = '104px';
+            logo.style.transform = 'scale(1)';
+            taskContainer.classList.remove('appear');
+            taskContainer.classList.add('disappear');
+            setTimeout(() => {
+                taskContainer.style.display = 'none';
+            }, 700);
+        } else {
+            displayLocationX += displayWidth;
+            sections.style.left = `${displayLocationX}px`;
+        }
     });
 
     // write your to-dos 버튼
@@ -43,15 +59,17 @@ document.addEventListener('DOMContentLoaded', () => {
         header.style.height = 'calc(100% + 50px)';
         logo.style.top = '670px';
         logo.style.transform = 'scale(0.6)';
-
+        taskContainer.classList.remove('disappear');
+        taskContainer.classList.add('appear');
         setTimeout(() => {
             taskContainer.style.display = 'flex';
-            taskContainer.classList.add('appear');
         }, 700);
     });
 
     // add task 버튼 (task 작성용 모달창 열림)
     writeTaskBtn.addEventListener('click', () => {
+        taskTitleInput.value = '';
+        taskDescInput.value = '';
         writeTaskModal.style.display = 'flex';
         writeTaskModal.classList.remove('disappear');
         writeTaskModal.classList.add('appear');
@@ -61,7 +79,9 @@ document.addEventListener('DOMContentLoaded', () => {
     closeModalBtn.addEventListener('click', (e) => {
         e.preventDefault();
         if( writeTitle.innerText === 'Edit Task' ) {
-            writeTitle.innerText = 'Write Task';
+            setTimeout(() => {
+                writeTitle.innerText = 'Write Task';
+            }, 700);
         }
         writeTaskModal.classList.remove('appear');
         writeTaskModal.classList.add('disappear');
@@ -73,49 +93,59 @@ document.addEventListener('DOMContentLoaded', () => {
     // 모달창 submit 버튼
     submitBtn.addEventListener('click', (e) => {
         e.preventDefault();
+
+        // 수정버튼을 눌렀을 시,
         if( writeTitle.innerText === 'Edit Task' ) {
-            let taskTitle = document.querySelector('.task-title');
-            let taskPhrase = document.querySelector('.task-phrase');
-            let taskDate = document.querySelector('date');
-            const itemIndex = userData.findIndex((item) => item.id === currIdForIndex);
 
             const now = new Date();
             const currentMonth = now.getMonth() + 1;
             const currentDay = now.getDate();
+            console.log(currIdForIndex);
+            const itemIndex = userData.findIndex((item) => item.id === currIdForIndex);
 
             userData[itemIndex].title = taskTitleInput.value;
-            userData[itemIndex].description = taskDescriptionInput.value;
+            userData[itemIndex].description = taskDescInput.value;
             userData[itemIndex].date = `${currentMonth}. ${currentDay}`
             userData[itemIndex].complete = false;
 
-            taskTitle.innerText = userData[itemIndex].title;
-            taskPhrase.innerText = userData[itemIndex].description;
-            taskDate.innerText = `${currentMonth}. ${currentDay}.`;
-
             localStorage.setItem('userData', JSON.stringify(userData));
+            taskList.innerHTML = ''; // task 수정완료 후 요소가 중복되는 이슈 방지
+            render();
+
+        // add task버튼을 눌렀을 시,
         } else {
             // 객체 고유id값과 리스트의 현재날짜 텍스트에 씀
             const now = new Date();
-            const currentMonth = now.getMonth() + 1;
-            const currentDay = now.getDate();
+            const currentMonth = String(now.getMonth() + 1).padStart(2, '0');
+            const currentDay = String(now.getDate()).padStart(2, '0');
 
             // 배열에 push할 객체 생성
             const taskData = {
                 id: Date.now(),
-                date: `${currentMonth}. ${currentDay}.`,
+                date: `${currentMonth}. ${currentDay}`,
                 title: taskTitleInput.value,
-                description: taskDescriptionInput.value,
+                description: taskDescInput.value,
                 complete: false, // 토글버튼
             };
 
+            userData.push(taskData);
             addTask(taskData); // DOM 생성 함수
             saveTask(userData, taskData);
+            
+            taskTitleInput.value = '';
+            taskDescInput.value = '';
+
+            writeTaskModal.classList.remove('appear');
+            writeTaskModal.classList.add('disappear');
+            setTimeout(() => {
+                writeTaskModal.style.display = 'none';
+            }, 700);
         }
     });
 
     const addTask = (item) => {
 
-        // DOM 생성
+        // 요소 생성
         const taskList = document.querySelector('.task-lists');
         const task = document.createElement('div');
         const taskTitle = document.createElement('h2');
@@ -133,6 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // 클래스 추가
         task.classList.add('task');
+        task.classList.add('add-task-ani');
         taskTitle.classList.add('task-title');
         taskPhrase.classList.add('task-phrase');
         taskDate.classList.add('date');
@@ -149,7 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
         editBtn.classList.add('edit-btn');
         delBtn.classList.add('del-btn');
 
-        // innerText 객체에서 받아옴
+        // 텍스트, 아이콘 추가
         taskTitle.innerText = item.title;
         taskPhrase.innerText = item.description;
         taskDate.innerText = item.date;
@@ -157,7 +188,7 @@ document.addEventListener('DOMContentLoaded', () => {
         iconEdit.innerText = 'edit';
         iconDel.innerText = 'delete';
 
-        // DOM 화면에 추가
+        // 화면에 업데이트
         tglCircle.appendChild(iconCheck);
         doneToggleBtn.appendChild(tglCircle);
         editBtn.appendChild(iconEdit);
@@ -178,9 +209,9 @@ document.addEventListener('DOMContentLoaded', () => {
         doneToggleBtn.addEventListener('click', () => {
             
             // submit하여 생성될 때 또는 데이터에서 렌더링되는 도중에 미리 객체의 고유id값 보존
-            currIdForIndex = item.id;
-
             // currIdForIndex를 이용해 배열의 index 찾기
+            currIdForIndex = item.id;
+            console.log(currIdForIndex);
             const itemIndex = userData.findIndex((item) => item.id === currIdForIndex);
 
             // 만약 배열에서 클릭된 요소의 index를 찾으면
@@ -202,20 +233,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
         delBtn.addEventListener('click', (e) => {
             currIdForIndex = item.id;
+            console.log(currIdForIndex);
             const itemIndex = userData.findIndex((item) => item.id === currIdForIndex);
             if (itemIndex > -1) {
                 // 배열에서 해당 인덱스에 있는 객체 삭제.
                 userData.splice(itemIndex, 1);
                 //
-                task.remove();
+                task.classList.add('del-task-ani');
+                setTimeout(() => {
+                    task.remove();
+                }, 700);
                 localStorage.setItem('userData', JSON.stringify(userData));
             }
         });
 
-        editBtn.addEventListener('click', (e) => {
+        editBtn.addEventListener('click', () => {
             currIdForIndex = item.id;
+            console.log(currIdForIndex);
             const itemIndex = userData.findIndex((item) => item.id === currIdForIndex);
             if (itemIndex > -1) {
+
+                taskTitleInput.value = userData[itemIndex].title;
+                taskDescInput.value = userData[itemIndex].description;
                 writeTitle.innerText = 'Edit Task';
                 writeTaskModal.style.display = 'flex';
                 writeTaskModal.classList.remove('disappear');
@@ -225,8 +264,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // 객체를 배열에 push > 로컬스토리지 저장
-    const saveTask = (userData, taskData) => {
-        userData.push(taskData);
+    const saveTask = (userData) => {
         localStorage.setItem('userData', JSON.stringify(userData));
     };
 
@@ -241,5 +279,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    const updateTime = () => {
+        let date = new Date();
+    
+        const seconds = String(date.getSeconds()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        const hours = String(date.getHours()).padStart(2, '0');
+    
+        time.textContent = `${hours} : ${minutes} : ${seconds}`;
+    };
+
     render();
+    setInterval(updateTime, 1000);
 });
